@@ -70,8 +70,8 @@ func decode_list(data []byte) ([]any, error) {
 	return nil, nil
 }
 
-func decode_dictionary(data []byte) (map[any]any, error) {
-	dictionary := make(map[any]any)
+func decode_dictionary(data []byte) (map[string]any, error) {
+	dictionary := make(map[string]any)
 	key := ""
 	value := ""
 
@@ -81,13 +81,7 @@ func decode_dictionary(data []byte) (map[any]any, error) {
 		if b == 'e' {
 			break
 		}
-
-		if is_key {
-			key += string(b)
-		} else {
-			value += string(b)
-		}
-
+		
 		if b == ':' {
 			if is_key {
 				is_key = false
@@ -97,6 +91,12 @@ func decode_dictionary(data []byte) (map[any]any, error) {
 				value = ""
 				is_key = true
 			}
+		}
+
+		if is_key {
+			key += string(b)
+		} else {
+			value += string(b)
 		}
 	}
 
