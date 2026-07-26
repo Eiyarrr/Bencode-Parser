@@ -22,7 +22,7 @@ func decode(data []byte, pos *int) (any, error) {
 		return decodeString(data, pos)
 
 	default:
-		return nil, fmt.Errorf("Unexpected Character: " + string(data[*pos]))
+		return nil, fmt.Errorf("unexpected character while finding correct decoder to use: %q", data[*pos])
 	}
 }
 
@@ -32,7 +32,7 @@ func decodeInteger(data []byte, pos *int) (int64, error) {
 
 	for data[*pos] != 'e' {
 		if !is_digit(data[*pos]) {
-			return num, fmt.Errorf("Unexpected Character while trying to decode an integer: " + string(data[*pos]))
+			return num, fmt.Errorf("unexpected character while trying to decode an integer: %q", data[*pos])
 		}
 		// normalize byte to 0
 		num = num*10 + int64(data[*pos]) - 48
@@ -41,9 +41,9 @@ func decodeInteger(data []byte, pos *int) (int64, error) {
 	return num, nil
 }
 
-func decodeList(data []byte, pos *int) ([]any, error)                {}
-func decodeDictionary(data []byte, pos *int) (map[string]any, error) {}
-func decodeString(data []byte, pos *int) (string, error)             {}
+func decodeList(data []byte, pos *int) ([]any, error)                { return nil, nil }
+func decodeDictionary(data []byte, pos *int) (map[string]any, error) { return nil, nil }
+func decodeString(data []byte, pos *int) (string, error)             { return "", nil }
 
 func is_digit(b byte) bool {
 	return b >= '0' && b <= '9'
