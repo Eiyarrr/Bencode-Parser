@@ -5,15 +5,15 @@ func Decode(data []byte) (any, error) {
 	var err error = nil
 
 	switch data[0] {
-	// 'd' -> dictionary
+	// ASCII 'd' -> dictionary
 	case 100:
 		ret, err = decode_dictionary(data)
 
-	// 'i' -> integer
+	// ASCII 'i' -> integer
 	case 105:
 		ret, err = decode_integer(data)
 
-	// 'l' -> list
+	// ASCII 'l' -> list
 	case 108:
 		ret, err = decode_list(data)
 
@@ -33,13 +33,15 @@ func decode_string(data []byte) (string, error) {
 		if b >= 48 && b <= 57 {
 			// normalize byte to 0
 			strLen += int(b) - 48
+		} else {
 			// colon ':'
-		} else if b != 58 {
-			str += string(b)
-			strLen--
+			if b != 58 {
+				str += string(b)
+				strLen--
 
-			if strLen <= 0 {
-				break
+				if strLen <= 0 {
+					break
+				}
 			}
 		}
 	}
@@ -54,9 +56,10 @@ func decode_integer(data []byte) (int64, error) {
 		if b == 101 {
 			break
 		}
+
 		// between 0 and 9
 		if b >= 48 && b <= 57 {
-						   // normalize byte to 0
+			// normalize byte to 0
 			num = num*10 + int64(b) - 48
 		}
 	}
