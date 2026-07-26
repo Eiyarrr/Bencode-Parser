@@ -4,7 +4,7 @@ import (
 	"errors"
 )
 
-func Decode(data []byte) (any, error) {
+func old_Decode(data []byte) (any, error) {
 	var ret any = nil
 	var err error = nil
 
