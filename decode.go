@@ -35,8 +35,7 @@ func decode_string(data []byte) (string, error) {
 			// normalize byte to 0
 			strLen += int(b) - 48
 		} else {
-			// colon ':'
-			if b != 58 {
+			if b != ':' {
 				str += string(b)
 				strLen--
 
@@ -53,8 +52,7 @@ func decode_string(data []byte) (string, error) {
 func decode_integer(data []byte) (int64, error) {
 	var num int64 = 0
 	for _, b := range data {
-		// wait for 'e' to exit loop
-		if b == 101 {
+		if b == 'e' {
 			break
 		}
 
