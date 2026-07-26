@@ -60,7 +60,28 @@ func decodeList(data []byte, pos *int) ([]any, error) {
 	*pos++ // skip suffix 'e'
 	return list, nil
 }
-func decodeDictionary(data []byte, pos *int) (map[string]any, error) { return nil, nil }
+func decodeDictionary(data []byte, pos *int) (map[string]any, error) {
+	*pos++ // skip prefix 'd'
+
+	dictionary := make(map[string]any)
+
+	for data[*pos] != 'e' {
+		key, err := decodeString(data, pos)
+		if err != nil {
+			return nil, err
+		}
+
+		value, err := decode(data, pos)
+		if err != nil {
+			return nil, err
+		}
+
+		dictionary[key] = value
+	}
+
+	*pos++ // skip suffix 'e'
+	return dictionary, nil
+}
 
 func decodeString(data []byte, pos *int) (string, error) {
 	strLen := 0
