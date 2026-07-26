@@ -76,12 +76,23 @@ func decode_dictionary(data []byte) (map[string]any, error) {
 	value := ""
 
 	is_key := true
+	write := false
+	max_len := 0
 
 	for _, b := range data {
-		if b == 'e' {
-			break
+		if !write {
+			if is_digit(b) {
+				// normalize byte to 0
+				max_len = max_len*10 + int(b) - 48
+			}
+
+			if b == ':' {
+				write = true
+			}
+
+			continue
 		}
-		
+
 		if b == ':' {
 			if is_key {
 				is_key = false
@@ -97,6 +108,10 @@ func decode_dictionary(data []byte) (map[string]any, error) {
 			key += string(b)
 		} else {
 			value += string(b)
+		}
+
+		if len(dictionary) == max_len {
+			break
 		}
 	}
 
