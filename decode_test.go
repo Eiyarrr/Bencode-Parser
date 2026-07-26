@@ -13,3 +13,15 @@ func TestDecodeString(t *testing.T) {
 		t.Fatal("Wrong result")
 	}
 }
+
+func TestDecodeInteger(t *testing.T) {
+	result, err := Decode([]byte("i152e"))
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if result != "152" {
+		t.Fatal("Wrong result")
+	}
+}
