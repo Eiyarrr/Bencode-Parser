@@ -27,7 +27,7 @@ func decode(data []byte, pos *int) (any, error) {
 }
 
 func decodeInteger(data []byte, pos *int) (int64, error) {
-	*pos++ // skip prefix
+	*pos++ // skip prefix 'i'
 	var num int64 = 0
 
 	for data[*pos] != 'e' {
@@ -38,6 +38,8 @@ func decodeInteger(data []byte, pos *int) (int64, error) {
 		num = num*10 + int64(data[*pos]) - 48
 		*pos++
 	}
+
+	*pos++ // skip suffix 'e'
 	return num, nil
 }
 
