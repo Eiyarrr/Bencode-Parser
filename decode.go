@@ -43,12 +43,20 @@ func decode_string(data []byte) (string, error) {
 			}
 		}
 	}
-	
+
 	return str, nil
 }
 
 func decode_integer(data []byte) (int64, error) {
-	return 0, nil
+	var num int64 = 0
+	for _, b := range data {
+		// wait for 'e' to exit loop
+		if b == 101 {
+			break
+		}
+		num = num*10 + int64(b)
+	}
+	return num, nil
 }
 
 func decode_list(data []byte) ([]any, error) {
