@@ -1,5 +1,7 @@
 package bencode
 
+import "errors"
+
 func Decode(data []byte) (any, error) {
 	var ret any = nil
 	var err error = nil
@@ -18,8 +20,12 @@ func Decode(data []byte) (any, error) {
 		ret, err = decode_list(data)
 
 	// other -> string
-	default:
+	case is_digit(data[0]):
 		ret, err = decode_string(data)
+
+	// not a valid bencode token
+	default:
+		return nil, errors.New("Invalid Token")
 	}
 
 	return ret, err
@@ -29,8 +35,7 @@ func decode_string(data []byte) (string, error) {
 	strLen := 0
 	str := ""
 	for _, b := range data {
-		// between 0 and 9
-		if b >= 48 && b <= 57 {
+		if is_digit(b) {
 			// normalize byte to 0
 			strLen += int(b) - 48
 		} else {
@@ -57,8 +62,7 @@ func decode_integer(data []byte) (int64, error) {
 			break
 		}
 
-		// between 0 and 9
-		if b >= 48 && b <= 57 {
+		if is_digit(b) {
 			// normalize byte to 0
 			num = num*10 + int64(b) - 48
 		}
@@ -72,4 +76,8 @@ func decode_list(data []byte) ([]any, error) {
 
 func decode_dictionary(data []byte) (map[any]any, error) {
 	return nil, nil
+}
+
+func is_digit(b byte) bool {
+	return b >= '0' && b <= '9'
 }
