@@ -2,7 +2,6 @@ package bencode
 
 import (
 	"errors"
-	"weak"
 )
 
 func Decode(data []byte) (any, error) {
@@ -94,6 +93,8 @@ func decode_dictionary(data []byte) (map[any]any, error) {
 				is_key = false
 			} else {
 				dictionary[key] = value
+				key = ""
+				value = ""
 				is_key = true
 			}
 		}
