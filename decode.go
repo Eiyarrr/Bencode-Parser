@@ -26,7 +26,25 @@ func decode(data []byte, pos *int) (any, error) {
 	}
 }
 
-func decodeInteger(data, pos) (i64, error) {}
-func decodeList(data, pos) ([]any, error) {}
+func decodeInteger(data, pos) (i64, error) {
+	*pos++ // skip prefix
+	var num int64 = 0
+
+	for data[*pos] != 'e' {
+		if !is_digit(data[*pos]) {
+			return nil, fmt.Errorf("Unexpected Character while trying to decode an integer: " + string(data[*pos]))
+		}
+		// normalize byte to 0
+		num = num*10 + int64(data[*pos]) - 48
+		*pos++
+	}
+	return num, nil
+}
+
+func decodeList(data, pos) ([]any, error)                {}
 func decodeDictionary(data, pos) (map[string]any, error) {}
-func decodeString(data, pos) (string, error) {}
+func decodeString(data, pos) (string, error)             {}
+
+func is_digit(b byte) bool {
+	return b >= '0' && b <= '9'
+}

@@ -118,6 +118,6 @@ func decode_dictionary(data []byte) (map[string]any, error) {
 	return dictionary, nil
 }
 
-func is_digit(b byte) bool {
+func old_is_digit(b byte) bool {
 	return b >= '0' && b <= '9'
 }
