@@ -1,6 +1,9 @@
 package bencode
 
-import "errors"
+import (
+	"errors"
+	"weak"
+)
 
 func Decode(data []byte) (any, error) {
 	var ret any = nil
@@ -69,7 +72,34 @@ func decode_list(data []byte) ([]any, error) {
 }
 
 func decode_dictionary(data []byte) (map[any]any, error) {
-	return nil, nil
+	dictionary := make(map[any]any)
+	key := ""
+	value := ""
+
+	is_key := true
+
+	for _, b := range data {
+		if b == 'e' {
+			break
+		}
+
+		if is_key {
+			key += string(b)
+		} else {
+			value += string(b)
+		}
+
+		if b == ':' {
+			if is_key {
+				is_key = false
+			} else {
+				dictionary[key] = value
+				is_key = true
+			}
+		}
+	}
+
+	return dictionary, nil
 }
 
 func is_digit(b byte) bool {
