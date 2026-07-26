@@ -21,7 +21,7 @@ func TestDecodeInteger(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if result != "152" {
+	if result != 152 {
 		t.Fatal("Wrong result")
 	}
 }

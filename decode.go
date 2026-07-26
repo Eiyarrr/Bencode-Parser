@@ -54,7 +54,11 @@ func decode_integer(data []byte) (int64, error) {
 		if b == 101 {
 			break
 		}
-		num = num*10 + int64(b)
+		// between 0 and 9
+		if b >= 48 && b <= 57 {
+						   // normalize byte to 0
+			num = num*10 + int64(b) - 48
+		}
 	}
 	return num, nil
 }
