@@ -41,7 +41,23 @@ func decodeInteger(data []byte, pos *int) (int64, error) {
 	return num, nil
 }
 
-func decodeList(data []byte, pos *int) ([]any, error)                { return nil, nil }
+func decodeList(data []byte, pos *int) ([]any, error) {
+	*pos++ // skip prefix 'l'
+
+	var list []any
+
+	for data[*pos] != 'e' {
+		value, err := decode(data, pos)
+		if err != nil {
+			return nil, err
+		}
+
+		list = append(list, value)
+	}
+
+	*pos++ // skip suffix 'e'
+	return list, nil
+}
 func decodeDictionary(data []byte, pos *int) (map[string]any, error) { return nil, nil }
 
 func decodeString(data []byte, pos *int) (string, error) {
