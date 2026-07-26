@@ -6,20 +6,16 @@ func Decode(data []byte) (any, error) {
 	var ret any = nil
 	var err error = nil
 
-	switch data[0] {
-	// ASCII 'd' -> dictionary
-	case 100:
+	switch {
+	case data[0] == 'd':
 		ret, err = decode_dictionary(data)
 
-	// ASCII 'i' -> integer
-	case 105:
+	case data[0] == 'i':
 		ret, err = decode_integer(data)
 
-	// ASCII 'l' -> list
-	case 108:
+	case data[0] == 'l':
 		ret, err = decode_list(data)
 
-	// other -> string
 	case is_digit(data[0]):
 		ret, err = decode_string(data)
 
