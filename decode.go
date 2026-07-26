@@ -6,15 +6,15 @@ func Decode(data []byte) (any, error) {
 
 	switch data[0] {
 	// 'd' -> dictionary
-	case 68:
+	case 100:
 		ret, err = decode_dictionary(data)
 
 	// 'i' -> integer
-	case 73:
+	case 105:
 		ret, err = decode_integer(data)
 
 	// 'l' -> list
-	case 76:
+	case 108:
 		ret, err = decode_list(data)
 
 	// other -> string
