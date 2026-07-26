@@ -43,7 +43,30 @@ func decodeInteger(data []byte, pos *int) (int64, error) {
 
 func decodeList(data []byte, pos *int) ([]any, error)                { return nil, nil }
 func decodeDictionary(data []byte, pos *int) (map[string]any, error) { return nil, nil }
-func decodeString(data []byte, pos *int) (string, error)             { return "", nil }
+
+func decodeString(data []byte, pos *int) (string, error) {
+	strLen := 0
+	str := ""
+
+	// get length of string
+	for data[*pos] != ':' {
+		if !is_digit(data[*pos]) {
+			return str, fmt.Errorf("unexpected character while trying to decode the length of a string: %q", data[*pos])
+		}
+		// normalize byte to 0
+		strLen = strLen*10 + int(data[*pos]) - 48
+		*pos++
+	}
+
+	// skip divider ':'
+	*pos++
+
+	// set str to slice from ':' to end of string
+	str = string(data[*pos : *pos+strLen])
+	*pos += strLen
+
+	return str, nil
+}
 
 func is_digit(b byte) bool {
 	return b >= '0' && b <= '9'
