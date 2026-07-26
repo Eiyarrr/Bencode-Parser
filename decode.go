@@ -1,6 +1,31 @@
 package bencode
 
 func Decode(data []byte) (any, error) {
+	var ret any = nil
+	var err error = nil
+
+	switch data[0] {
+	// 'd' -> dictionary
+	case 68:
+		ret, err = decode_dictionary(data)
+
+	// 'i' -> integer
+	case 73:
+		ret, err = decode_integer(data)
+
+	// 'l' -> list
+	case 76:
+		ret, err = decode_list(data)
+
+	// other -> string
+	default:
+		ret, err = decode_string(data)
+	}
+
+	return ret, err
+}
+
+func decode_string(data []byte) (string, error) {
 	strLen := 0
 	str := ""
 	for _, b := range data {
@@ -14,4 +39,16 @@ func Decode(data []byte) (any, error) {
 		}
 	}
 	return str, nil
+}
+
+func decode_integer(data []byte) (int64, error) {
+	return 0, nil
+}
+
+func decode_list(data []byte) ([]any, error) {
+	return nil, nil
+}
+
+func decode_dictionary(data []byte) (map[any]any, error) {
+	return nil, nil
 }
