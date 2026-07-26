@@ -34,8 +34,9 @@ func decode_string(data []byte) (string, error) {
 			// normalize byte to 0
 			strLen += int(b) - 48
 			// colon ':'
-		} else if b != 58 {
+		} else if b != 58 && strLen > 0 {
 			str += string(b)
+			strLen--
 		}
 	}
 	return str, nil
