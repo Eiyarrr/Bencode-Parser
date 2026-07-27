@@ -1,8 +1,16 @@
 package bencode
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+)
 
-func Decode(data []byte) (any, error) {
+func Decode(reader io.Reader) (any, error) {
+	data, err := io.ReadAll(reader)
+	if err != nil {
+		return nil, err
+	}
+
 	pos := 0
 	return decode(data, &pos)
 }
