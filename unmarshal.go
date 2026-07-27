@@ -15,4 +15,16 @@ func Unmarshal(reader io.Reader, v any) error {
 	return fill(value, reflect.ValueOf(v).Elem())
 }
 
-func fill(value any, destination reflect.Value) error { return nil }
+func fill(value any, destination reflect.Value) error {
+	switch destination.Kind() {
+		case reflect.Struct:
+
+		case reflect.Slice:
+			
+		case reflect.Int64:
+
+		case reflect.String:
+			
+	}
+	return nil
+}
