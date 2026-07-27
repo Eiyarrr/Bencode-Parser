@@ -52,6 +52,22 @@ func fill(value any, destination reflect.Value) error {
 		}
 
 	case reflect.Slice:
+		// ensure the type is a list
+		list, ok := value.([]any)
+		if !ok {
+			return errors.New("unexpected error trying to fill slice (list)")
+		}
+
+		// generate a slice of the destination that contains all the parts that need to be filled
+		slice := reflect.MakeSlice(destination.Type(), len(list), len(list))
+
+		// for each item in the list, try to fill it in place
+		for i, item := range list {
+			err := fill(item, slice.Index(i))
+			if err != nil {
+				return err
+			}
+		}
 
 	case reflect.Int64:
 		i, ok := value.(int64)
