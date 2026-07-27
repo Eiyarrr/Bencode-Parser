@@ -25,10 +25,14 @@ func Encode(value any) ([]byte, error) {
 }
 
 func encodeInteger(value int64) ([]byte, error) {
-	// value between 'i' and 'e'
+	// "i%de" -> "i" + numbers + "e"
 	return []byte(fmt.Sprintf("i%de", value)), nil
 }
 
 func encodeList(value []any) ([]byte, error)                { return nil, nil }
 func encodeDictionary(value map[string]any) ([]byte, error) { return nil, nil }
-func encodeString(value string) ([]byte, error)             { return nil, nil }
+
+func encodeString(value string) ([]byte, error) {
+	// "%d:%s" -> numbers + ":" + string
+	return []byte(fmt.Sprintf("%d:%s", len(value), value)), nil
+}
