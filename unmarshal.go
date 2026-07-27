@@ -52,6 +52,17 @@ func fill(value any, destination reflect.Value) error {
 		}
 
 	case reflect.Slice:
+		// if slice is of kind []byte (practically string other than for hashing)
+		if destination.Type().Elem().Kind() == reflect.Uint8 {
+			str, ok := value.(string)
+			if !ok {
+				return errors.New("expected byte string")
+			}
+
+			destination.SetBytes([]byte(str))
+			return nil
+		}
+
 		// ensure the type is a list
 		list, ok := value.([]any)
 		if !ok {
