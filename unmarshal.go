@@ -1,6 +1,9 @@
 package bencode
 
-import "io"
+import (
+	"io"
+	"reflect"
+)
 
 func Unmarshal(reader io.Reader, v any) error {
 	value, err := Decode(reader)
@@ -8,5 +11,8 @@ func Unmarshal(reader io.Reader, v any) error {
 		return err
 	}
 
-	return nil
+	// .Elem() gets the underlying value of the pointer
+	return fill(value, reflect.ValueOf(v).Elem())
 }
+
+func fill(value any, destination reflect.Value) error { return nil }
