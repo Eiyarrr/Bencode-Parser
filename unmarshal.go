@@ -54,6 +54,12 @@ func fill(value any, destination reflect.Value) error {
 	case reflect.Slice:
 
 	case reflect.Int64:
+		i, ok := value.(int64)
+		if !ok {
+			return errors.New("unexpected error trying to fill int64")
+		}
+
+		destination.SetInt(i)
 
 	case reflect.String:
 		str, ok := value.(string)
