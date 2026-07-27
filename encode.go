@@ -1,6 +1,7 @@
 package bencode
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 )
@@ -29,7 +30,27 @@ func encodeInteger(value int64) ([]byte, error) {
 	return []byte(fmt.Sprintf("i%de", value)), nil
 }
 
-func encodeList(value []any) ([]byte, error)                { return nil, nil }
+func encodeList(list []any) ([]byte, error)                {
+	var buf bytes.Buffer
+
+	// add prefix
+	buf.WriteByte('l')
+
+	for _, item := range list {
+		encoded, err := Encode(item)
+		if err != nil {
+			return nil, err
+		}
+
+		buf.Write(encoded)
+	}
+
+	// add suffix
+	buf.WriteByte('e')
+
+	return buf.Bytes(), nil
+}
+
 func encodeDictionary(value map[string]any) ([]byte, error) { return nil, nil }
 
 func encodeString(value string) ([]byte, error) {
