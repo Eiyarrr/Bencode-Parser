@@ -12,10 +12,10 @@ func Decode(reader io.Reader) (any, error) {
 	}
 
 	pos := 0
-	return decode(data, &pos)
+	return DecodeBytes(data, &pos)
 }
 
-func decode(data []byte, pos *int) (any, error) {
+func DecodeBytes(data []byte, pos *int) (any, error) {
 	switch data[*pos] {
 	case 'i':
 		return decodeInteger(data, pos)
@@ -68,7 +68,7 @@ func decodeList(data []byte, pos *int) ([]any, error) {
 	var list []any
 
 	for data[*pos] != 'e' {
-		value, err := decode(data, pos)
+		value, err := DecodeBytes(data, pos)
 		if err != nil {
 			return nil, err
 		}
@@ -90,7 +90,7 @@ func decodeDictionary(data []byte, pos *int) (map[string]any, error) {
 			return nil, err
 		}
 
-		value, err := decode(data, pos)
+		value, err := DecodeBytes(data, pos)
 		if err != nil {
 			return nil, err
 		}

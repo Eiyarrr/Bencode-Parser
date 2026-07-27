@@ -3,7 +3,7 @@ package bencode
 import "testing"
 
 func TestDecodeString(t *testing.T) {
-	result, err := Decode([]byte("4:spam"))
+	result, err := DecodeBytes([]byte("4:spam"))
 
 	if err != nil {
 		t.Fatal(err)
@@ -15,7 +15,7 @@ func TestDecodeString(t *testing.T) {
 }
 
 func TestDecodeInteger(t *testing.T) {
-	result, err := Decode([]byte("i152e"))
+	result, err := DecodeBytes([]byte("i152e"))
 
 	if err != nil {
 		t.Fatal(err)
@@ -27,7 +27,7 @@ func TestDecodeInteger(t *testing.T) {
 }
 
 func TestDecodeDictionary(t *testing.T) {
-	result, err := Decode([]byte("d3:cow3:moo4:spam4:eggse"))
+	result, err := DecodeBytes([]byte("d3:cow3:moo4:spam4:eggse"))
 
 	if err != nil {
 		t.Fatal(err)
@@ -48,7 +48,7 @@ func TestDecodeDictionary(t *testing.T) {
 }
 
 func TestDecodeList(t *testing.T) {
-	result, err := Decode([]byte("l4:spami42e3:fooe"))
+	result, err := DecodeBytes([]byte("l4:spami42e3:fooe"))
 
 	if err != nil {
 		t.Fatal(err)
