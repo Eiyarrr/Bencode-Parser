@@ -30,7 +30,7 @@ func encodeInteger(value int64) ([]byte, error) {
 	return []byte(fmt.Sprintf("i%de", value)), nil
 }
 
-func encodeList(list []any) ([]byte, error)                {
+func encodeList(list []any) ([]byte, error) {
 	var buf bytes.Buffer
 
 	// add prefix
@@ -51,7 +51,35 @@ func encodeList(list []any) ([]byte, error)                {
 	return buf.Bytes(), nil
 }
 
-func encodeDictionary(value map[string]any) ([]byte, error) { return nil, nil }
+func encodeDictionary(dictionary map[string]any) ([]byte, error) {
+	var buf bytes.Buffer
+
+	// add prefix
+	buf.WriteByte('d')
+
+	keys := make([]string, 0, len(dictionary))
+
+	for key := range dictionary {
+		keys = append(keys, key)
+	}
+
+	for _, key := range keys {
+		encodedKey, _ := encodeString(key)
+		buf.Write(encodedKey)
+
+		encodedValue, err := Encode(dictionary[key])
+		if err != nil {
+			return nil, err
+		}
+
+		buf.Write(encodedValue)
+	}
+
+	// add suffix
+	buf.WriteByte('e')
+
+	return buf.Bytes(), nil
+}
 
 func encodeString(value string) ([]byte, error) {
 	// "%d:%s" -> numbers + ":" + string
