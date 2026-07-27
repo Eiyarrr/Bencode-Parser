@@ -2,7 +2,7 @@ package bencode
 
 import "io"
 
-func Unmarshal(reader io.Reader, value any) error {
+func Unmarshal(reader io.Reader, v any) error {
 	value, err := Decode(reader)
 	if err != nil {
 		return err
