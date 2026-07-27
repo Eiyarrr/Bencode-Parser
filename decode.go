@@ -11,11 +11,15 @@ func Decode(reader io.Reader) (any, error) {
 		return nil, err
 	}
 
-	pos := 0
-	return DecodeBytes(data, &pos)
+	return DecodeBytes(data)
 }
 
-func DecodeBytes(data []byte, pos *int) (any, error) {
+func DecodeBytes(data []byte) (any, error) {
+	pos := 0
+	return decode(data, &pos)
+}
+
+func decode(data[]byte, pos *int) (any, error) {
 	switch data[*pos] {
 	case 'i':
 		return decodeInteger(data, pos)
