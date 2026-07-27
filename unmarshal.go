@@ -61,13 +61,16 @@ func fill(value any, destination reflect.Value) error {
 		// generate a slice of the destination that contains all the parts that need to be filled
 		slice := reflect.MakeSlice(destination.Type(), len(list), len(list))
 
-		// for each item in the list, try to fill it in place
+		// for each item in the list, try to fill it in place into previously created slice
 		for i, item := range list {
 			err := fill(item, slice.Index(i))
 			if err != nil {
 				return err
 			}
 		}
+
+		// fill the slice back into the user's list
+		destination.Set(slice)
 
 	case reflect.Int64:
 		i, ok := value.(int64)
