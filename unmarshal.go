@@ -1,6 +1,7 @@
 package bencode
 
 import (
+	"errors"
 	"io"
 	"reflect"
 )
@@ -24,6 +25,12 @@ func fill(value any, destination reflect.Value) error {
 		case reflect.Int64:
 
 		case reflect.String:
+			str, ok := value.(string)
+			if !ok {
+				return errors.New("unexpected error trying to fill string")
+			}
+
+			destination.SetString(str)
 			
 	}
 	return nil
