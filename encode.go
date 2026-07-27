@@ -1,6 +1,9 @@
 package bencode
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 func Encode(value any) ([]byte, error) {
 	switch v := value.(type) {
@@ -21,7 +24,11 @@ func Encode(value any) ([]byte, error) {
 	}
 }
 
-func encodeInteger(value int64) ([]byte, error)             { return nil, nil }
+func encodeInteger(value int64) ([]byte, error) {
+	// value between 'i' and 'e'
+	return []byte(fmt.Sprintf("i%de", value)), nil
+}
+
 func encodeList(value []any) ([]byte, error)                { return nil, nil }
 func encodeDictionary(value map[string]any) ([]byte, error) { return nil, nil }
 func encodeString(value string) ([]byte, error)             { return nil, nil }
