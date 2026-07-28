@@ -19,7 +19,7 @@ func DecodeBytes(data []byte) (any, error) {
 	return decode(data, &pos)
 }
 
-func decode(data[]byte, pos *int) (any, error) {
+func decode(data []byte, pos *int) (any, error) {
 	switch data[*pos] {
 	case 'i':
 		return decodeInteger(data, pos)
@@ -72,7 +72,7 @@ func decodeList(data []byte, pos *int) ([]any, error) {
 	var list []any
 
 	for data[*pos] != 'e' {
-		value, err := DecodeBytes(data, pos)
+		value, err := decode(data, pos)
 		if err != nil {
 			return nil, err
 		}
@@ -94,7 +94,7 @@ func decodeDictionary(data []byte, pos *int) (map[string]any, error) {
 			return nil, err
 		}
 
-		value, err := DecodeBytes(data, pos)
+		value, err := decode(data, pos)
 		if err != nil {
 			return nil, err
 		}
